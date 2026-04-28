@@ -1,1 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Artist Scheduler</title>
 
+<style>
+body { font-family: Arial; background: #f5f5f5; margin: 0; }
+header { background: #111; color: white; padding: 15px; font-size: 20px; }
+.container { padding: 20px; }
+input, button { padding: 8px; margin: 5px; }
+button { background: black; color: white; border: none; cursor: pointer; }
+table { width: 100%; margin-top: 20px; border-collapse: collapse; background: white; }
+th, td { padding: 10px; border: 1px solid #ddd; }
+th { background: #222; color: white; }
+</style>
+</head>
+
+<body>
+
+<header>🎤 Artist Scheduler</header>
+
+<div class="container">
+
+<h3>添加航班</h3>
+
+<input id="artist" placeholder="艺人">
+<input id="flight" placeholder="航班号">
+<input id="time" type="datetime-local">
+
+<button onclick="addFlight()">添加</button>
+
+<table>
+<thead>
+<tr>
+<th>艺人</th>
+<th>航班</th>
+<th>时间</th>
+</tr>
+</thead>
+<tbody id="tbody"></tbody>
+</table>
+
+</div>
+
+<script>
+let list = [];
+
+function addFlight() {
+    let artist = document.getElementById("artist").value;
+    let flight = document.getElementById("flight").value;
+    let time = document.getElementById("time").value;
+
+    if (!artist || !flight || !time) {
+        alert("填完整");
+        return;
+    }
+
+    list.push({
+        artist,
+        flight,
+        time: new Date(time)
+    });
+
+    render();
+}
+
+function render() {
+    list.sort((a, b) => a.time - b.time);
+
+    let html = "";
+
+    list.forEach(item => {
+        html += `
+        <tr>
+            <td>${item.artist}</td>
+            <td>${item.flight}</td>
+            <td>${item.time.toLocaleString()}</td>
+        </tr>
+        `;
+    });
+
+    document.getElementById("tbody").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
